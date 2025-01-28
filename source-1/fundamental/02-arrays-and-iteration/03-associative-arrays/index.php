@@ -1,5 +1,29 @@
 <?php
 $output = null;
+
+$user = [
+    'name' => 'Nizar Khan',
+    'email' => 'jC6fV@example.com',
+    'password' => '123456',
+    'hobbies' => ['Coding', 'Sleeping', 'Eating'],
+];
+
+// var_dump($user);
+
+//access array
+$output = $user['name'];
+$output = $user['email'];
+
+$output = $user['hobbies'][0];
+
+//add array value
+$user['address'] =  'KL';
+
+//unset array value
+unset($user['address']);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +46,12 @@ $output = null;
         <div class="bg-white rounded-lg shadow-md p-6 mt-6">
             <!-- Output -->
             <p class="text-xl"><?= $output ?></p>
+            <h2 class="text-xl font-semibold my-4">User Array:</h2>
+            <p>
+            <pre>
+                    <?php print_r($user); ?>
+                </pre>
+            </p>
         </div>
     </div>
 </body>

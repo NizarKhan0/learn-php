@@ -8,7 +8,19 @@
   4. Get the amount of numbers in the array and put into a variable.
   5. Print out 'The sum of the {amount} numbers is: {sum} '. For example, if the array is [1, 2, 3, 4, 5], the output should be 'The sum of the 5 numbers is: 15'. 
 */
-echo '<h3>Sum Of An Array</h3>';
+
+echo '<h3>Array Sum</h3>';
+// 1)
+$numbers = [1, 2, 3, 4, 5];
+
+// 2) ada dua cara
+$sum = array_sum($numbers);
+$sum = $numbers[0] + $numbers[1] + $numbers[2] + $numbers[3] + $numbers[4];
+
+//3)
+$amount = count($numbers);
+
+echo 'The sum of the ' . $amount . ' numbers is: ' . $sum;
 
 /*
   Challenge 2: Colors array
@@ -25,6 +37,28 @@ echo '<h3>Colors Array</h3>';
 
 $colors = ['red', 'blue', 'green', 'yellow'];
 
+// 1)
+$colors = array_reverse($colors);
+
+// 2) ada 2 cara use array push
+// array_push($colors, 'purple');
+// $colors[] = 'orange';
+//uuse array merge
+$colors = array_merge($colors, ['purple', 'orange']);
+
+
+// 3)
+// use array splice
+array_splice($colors, 1, 1, 'pink');
+// $colors[1] = 'pink';
+
+// 4)
+array_pop($colors);
+
+echo '<pre>';
+print_r($colors);
+echo '</pre>';
+
 /*
   Challenge 3: Job listings array
 
@@ -35,3 +69,70 @@ $colors = ['red', 'blue', 'green', 'yellow'];
 */
 
 echo '<h3>Job Listings</h3>';
+
+// 1)
+$job_listings = [
+  [
+    'id' => 1,
+    'job_title' => 'PHP Developer',
+    'company' => 'ABC Company',
+    'contact_email' => 'john@email.com',
+    'contact_phone' => '123-456-7890',
+    'skills' => [
+      'PHP',
+      'MySQL',
+      'JavaScript',
+      'HTML',
+      'CSS'
+    ]
+  ],
+  [
+    'id' => 2,
+    'job_title' => 'Web Designer',
+    'company' => 'XYZ Company',
+    'contact_email' => 'steph@email.com',
+    'contact_phone' => '123-456-7890',
+    'skills' => ['
+    Photoshop',
+      'Illustrator',
+      'HTML',
+      'CSS'
+    ]
+  ],
+  [
+    'id' => 3,
+    'job_title' => 'Web Developer',
+    'company' => '123 Company',
+    'contact_email' => 'joe@email.com',
+    'contact_phone' => '123-456-7890',
+    'skills' => ['
+    JavaScript',
+      'HTML',
+      'CSS',
+      'PHP',
+      'MySQL'
+    ]
+  ]
+];
+
+// 2)
+array_push($job_listings, [
+  'id' => 4,
+  'job_title' => 'UX Designer',
+  'company' => 'ABC Company',
+  'contact_email' => 'jane@email.com',
+  'contact_phone' => '123-456-7890',
+  'skills' => ['Figma', 'Adobe XD', 'HTML', 'CSS']
+]);
+
+// 3)
+echo $job_listings[1]['job_title'];
+
+//4)
+echo '<br>';
+echo $job_listings[2]['skills'][0];
+
+
+echo '<pre>';
+print_r($job_listings);
+echo '</pre>';
