@@ -48,60 +48,64 @@ $listings = [
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Job Listings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Job Listings</title>
 </head>
 
 <body class="bg-gray-100">
-  <header class="bg-blue-500 text-white p-4">
-    <div class="container mx-auto">
-      <h1 class="text-3xl font-semibold">Job Listings</h1>
-    </div>
-  </header>
-  <div class="container mx-auto p-4 mt-4">
-    <!-- Output -->
-    <div class="md my-4">
-      <div class="bg-white rounded-lg shadow-md">
-        <div class="p-4">
-          <h2 class="text-xl font-semibold">Software Engineer</h2>
-          <p class="text-gray-700 text-lg mt-2">We are seeking a skilled software engineer to develop high-quality software solutions.</p>
-          <ul class="mt-4">
-            <li class="mb-2">
-              <strong>Salary:</strong> $80,000
-            </li>
-            <li class="mb-2">
-              <strong>Location:</strong> San Francisco
-            </li>
-            <li class="mb-2">
-              <strong>Tags:</strong> Software Development, Java, Python
-            </li>
-          </ul>
+    <header class="bg-blue-500 text-white p-4">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-semibold">Job Listings</h1>
         </div>
-      </div>
-    </div>
+    </header>
+    <div class="container mx-auto p-4 mt-4">
+        <!-- Output -->
+        <?php foreach ($listings as $job) :?>
+        <div class="md my-4">
+            <div class="bg-white rounded-lg shadow-md">
+                <div class="p-4">
+                    <h2 class="text-xl font-semibold"><?= $job['title'] ?></h2>
+                    <p class="text-gray-700 text-lg mt-2"><?= $job['description'] ?></p>
+                    <ul class="mt-4">
+                        <li class="mb-2">
+                            <strong>Salary:</strong> <?= $job['salary'] ?>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Location:</strong> <?= $job['location'] ?>
+                        </li>
+                        <li class="mb-2">
+                            <!-- implode utk dari array jadi string -->
+                            <strong>Tags:</strong> <?= implode(', ', $job['tags']) ?>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
 
-    <div class="md my-4">
-      <div class="bg-white rounded-lg shadow-md">
-        <div class="p-4">
-          <h2 class="text-xl font-semibold">Marketing Specialist</h2>
-          <p class="text-gray-700 text-lg mt-2">We are looking for a marketing specialist to develop and implement effective marketing strategies.</p>
-          <ul class="mt-4">
-            <li class="mb-2">
-              <strong>Salary:</strong> $60,000
-            </li>
-            <li class="mb-2">
-              <strong>Location:</strong> New York
-            </li>
-            <li class="mb-2">
-              <strong>Tags:</strong> Digital Marketing, Social Media, SEO
-            </li>
-          </ul>
-        </div>
-      </div>
+        <!-- <div class="md my-4">
+            <div class="bg-white rounded-lg shadow-md">
+                <div class="p-4">
+                    <h2 class="text-xl font-semibold">Marketing Specialist</h2>
+                    <p class="text-gray-700 text-lg mt-2">We are looking for a marketing specialist to develop and
+                        implement effective marketing strategies.</p>
+                    <ul class="mt-4">
+                        <li class="mb-2">
+                            <strong>Salary:</strong> $60,000
+                        </li>
+                        <li class="mb-2">
+                            <strong>Location:</strong> New York
+                        </li>
+                        <li class="mb-2">
+                            <strong>Tags:</strong> Digital Marketing, Social Media, SEO
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
     </div>
-  </div>
 </body>
 
 </html>
