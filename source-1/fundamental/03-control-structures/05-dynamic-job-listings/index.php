@@ -38,7 +38,7 @@ $listings = [
     'description' => 'We are looking for a friendly customer service representative to assist customers and resolve issues.',
     'salary' => 40000,
     'location' => 'New York',
-    'tags' => ['Customer Support', 'Communication', 'Problem Solving']
+    'tags' => []
   ],
 ];
 ?>
@@ -48,42 +48,54 @@ $listings = [
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Job Listings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Job Listings</title>
 </head>
 
 <body class="bg-gray-100">
-  <header class="bg-blue-500 text-white p-4">
-    <div class="container mx-auto">
-      <h1 class="text-3xl font-semibold">Job Listings</h1>
-    </div>
-  </header>
-  <div class="container mx-auto p-4 mt-4">
-    <!-- Output -->
-    <?php foreach ($listings as $job) : ?>
-      <div class="md my-4">
-        <div class="bg-white rounded-lg shadow-md">
-          <div class="p-4">
-            <h2 class="text-xl font-semibold"><?= $job['title'] ?></h2>
-            <p class="text-gray-700 text-lg mt-2"><?= $job['description'] ?></p>
-            <ul class="mt-4">
-              <li class="mb-2">
-                <strong>Salary:</strong> <?= $job['salary'] ?>
-              </li>
-              <li class="mb-2">
-                <strong>Location:</strong> <?= $job['location'] ?>
-              </li>
-              <li class="mb-2">
-                <strong>Tags:</strong> <?= implode(', ', $job['tags']) ?>
-              </li>
-            </ul>
-          </div>
+    <header class="p-4 text-white bg-blue-500">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-semibold">Job Listings</h1>
         </div>
-      </div>
-    <?php endforeach; ?>
-  </div>
+    </header>
+    <div class="container p-4 mx-auto mt-4">
+        <!-- Output -->
+        <?php foreach ($listings as $index => $job) : ?>
+        <div class="my-4 md">
+            <div class="
+            <?php if($index % 2 == 0) : ?>
+            bg-blue-100
+            <?php else : ?>
+            bg-white
+            <?php endif; ?>
+            rounded-lg shadow-md">
+                <div class="p-4">
+                    <h2 class="text-xl font-semibold"><?= $job['title'] ?></h2>
+                    <p class="mt-2 text-lg text-gray-700"><?= $job['description'] ?></p>
+                    <ul class="mt-4">
+                        <li class="mb-2">
+                            <strong>Salary:</strong> <?= $job['salary'] ?>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Location:</strong> <?= $job['location'] ?>
+                            <?php if($job['location'] === 'New York') : ?>
+                            <span class="px-2 py-1 ml-2 text-xs text-white bg-blue-500 rounded-full">Local</span>
+                            <?php endif; ?>
+                        </li>
+                        <?php if(!empty($job['tags'])) : ?>
+                        <li class="mb-2">
+                            <strong>Tags:</strong> <?= implode(', ', $job['tags']) ?>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
 </body>
 
 </html>
