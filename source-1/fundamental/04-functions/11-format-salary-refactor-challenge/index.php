@@ -42,10 +42,14 @@ $listings = [
   ],
 ];
 
-function formatSalary($salary)
-{
-  return '$' . number_format($salary, 2);
-}
+//before
+// function formatSalary($salary)
+// {
+//   return 'RM' . number_format($salary, 2);
+// }
+
+//after refactor arrow function
+$formatSalary = fn ($salary) => 'RM' . number_format($salary, 2);
 
 function highlightTags($tags, $searchTerm)
 {
@@ -53,7 +57,8 @@ function highlightTags($tags, $searchTerm)
   return str_replace($searchTerm, "<span class='bg-yellow-200'>$searchTerm</span>", $tagsArray);
 }
 
-function calculateAverageSalary($listings)
+//letak parameter $formatSalary utk call variable arrow function yg ada kat luar 
+function calculateAverageSalary($listings, $formatSalary)
 {
   $totalSalary = 0;
   $count = count($listings);
@@ -66,7 +71,7 @@ function calculateAverageSalary($listings)
   // Calculate the average salary
   $averageSalary = ($count > 0) ? $totalSalary / $count : 0;
 
-  return formatSalary($averageSalary);
+  return $formatSalary($averageSalary);
 }
 ?>
 
@@ -75,49 +80,53 @@ function calculateAverageSalary($listings)
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Job Listings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Job Listings</title>
 </head>
 
 <body class="bg-gray-100">
-  <header class="bg-blue-500 text-white p-4">
-    <div class="container mx-auto">
-      <h1 class="text-3xl font-semibold">Job Listings</h1>
-    </div>
-  </header>
-  <div class="container mx-auto p-4 mt-4">
-    <div class="bg-green-100 rounded-lg shadow-md p-6 my-6">
-      <h2 class="text-2xl font-semibold mb-4">Average Salary: <?= calculateAverageSalary($listings)  ?></h2>
-    </div>
-    <!-- Output -->
-    <?php foreach ($listings as $index => $job) : ?>
-      <div class="md my-4">
-        <div class="rounded-lg shadow-md <?= $index % 2 === 0 ? 'bg-blue-100' : 'bg-white' ?>">
-          <div class="p-4">
-            <h2 class="text-xl font-semibold"><?= $job['title'] ?></h2>
-            <p class="text-gray-700 text-lg mt-2"><?= $job['description'] ?></p>
-            <ul class="mt-4">
-              <li class="mb-2">
-                <strong>Salary:</strong> <?= formatSalary($job['salary']); ?>
-              </li>
-              <li class="mb-2">
-                <strong>Location:</strong> <?= $job['location'] ?>
-
-                <span class="text-xs text-white <?= $job['location'] === 'New York' ? 'bg-blue-500' : 'bg-green-500'; ?> rounded-full px-2 py-1 ml-2"><?= $job['location'] === 'New York' ? 'Local' : 'Remote'; ?></span>
-              </li>
-              <?php if (!empty($job['tags'])) : ?>
-                <li class="mb-2">
-                  <strong>Tags:</strong> <?= highlightTags($job['tags'], 'Development') ?>
-                </li>
-              <?php endif; ?>
-            </ul>
-          </div>
+    <header class="bg-blue-500 text-white p-4">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-semibold">Job Listings</h1>
         </div>
-      </div>
-    <?php endforeach; ?>
-  </div>
+    </header>
+    <div class="container mx-auto p-4 mt-4">
+        <div class="bg-green-100 rounded-lg shadow-md p-6 my-6">
+            <h2 class="text-2xl font-semibold mb-4">Average Salary:
+                <!-- letak 2 parameter sebab kat function ada pass 2 variable -->
+                <?= calculateAverageSalary($listings, $formatSalary)  ?>
+            </h2>
+        </div>
+        <!-- Output -->
+        <?php foreach ($listings as $index => $job) : ?>
+        <div class="md my-4">
+            <div class="rounded-lg shadow-md <?= $index % 2 === 0 ? 'bg-blue-100' : 'bg-white' ?>">
+                <div class="p-4">
+                    <h2 class="text-xl font-semibold"><?= $job['title'] ?></h2>
+                    <p class="text-gray-700 text-lg mt-2"><?= $job['description'] ?></p>
+                    <ul class="mt-4">
+                        <li class="mb-2">
+                            <strong>Salary:</strong> <?php echo $formatSalary($job['salary']); ?>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Location:</strong> <?= $job['location'] ?>
+
+                            <span
+                                class="text-xs text-white <?= $job['location'] === 'New York' ? 'bg-blue-500' : 'bg-green-500'; ?> rounded-full px-2 py-1 ml-2"><?= $job['location'] === 'New York' ? 'Local' : 'Remote'; ?></span>
+                        </li>
+                        <?php if (!empty($job['tags'])) : ?>
+                        <li class="mb-2">
+                            <strong>Tags:</strong> <?= highlightTags($job['tags'], 'Development') ?>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
 </body>
 
 </html>
