@@ -44,7 +44,7 @@ $listings = [
 
 function formatSalary($salary)
 {
-  return '$' . number_format($salary);
+  return 'RM' . number_format($salary);
 }
 
 function highlightTags($tags, $searchTerm)
@@ -52,6 +52,46 @@ function highlightTags($tags, $searchTerm)
   $tagsArray = implode(', ', $tags);
   return str_replace($searchTerm, "<span class='bg-yellow-200'>$searchTerm</span>", $tagsArray);
 }
+
+//Solution 1
+function calculateAverageSalary($listings)
+{
+
+  //initialize variable totalSalary to 0
+  $totalSalary = 0;
+
+  //dapatkan number item yg ada kat array dan simpan dalam variable $count
+  $count = count($listings);
+
+  // guna foreachloop
+  foreach ($listings as $job) {
+    //guna += untuk tetap menambah
+    $totalSalary += $job['salary'];
+  }
+
+  // kira average salary ($count) tu untuk ada berapa item kat dalam array tu
+  $averageSalary = ($count > 0) ? $totalSalary / $count : 0;
+
+  //guna formatSalary yg dh define
+  return formatSalary($averageSalary);
+}
+
+//Solution 2
+function calculateAverageSalary2($listings)
+{
+
+  $salaries = array_column($listings, 'salary');
+  // var_dump($salaries);
+  $totalSalary = array_sum($salaries);
+  // var_dump($totalSalary);
+  $count = count($listings);
+  // var_dump($count);
+  $averageSalary = ($count > 0) ? $totalSalary / $count : 0;
+  // var_dump($averageSalary);
+
+  return formatSalary($averageSalary);
+}
+
 ?>
 
 
@@ -59,49 +99,53 @@ function highlightTags($tags, $searchTerm)
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Job Listings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Job Listings</title>
 </head>
 
 <body class="bg-gray-100">
-  <header class="bg-blue-500 text-white p-4">
-    <div class="container mx-auto">
-      <h1 class="text-3xl font-semibold">Job Listings</h1>
-    </div>
-  </header>
-  <div class="container mx-auto p-4 mt-4">
-    <div class="bg-green-100 rounded-lg shadow-md p-6 my-6">
-      <h2 class="text-2xl font-semibold mb-4">Average Salary:</h2>
-    </div>
-    <!-- Output -->
-    <?php foreach ($listings as $index => $job) : ?>
-      <div class="md my-4">
-        <div class="rounded-lg shadow-md <?= $index % 2 === 0 ? 'bg-blue-100' : 'bg-white' ?>">
-          <div class="p-4">
-            <h2 class="text-xl font-semibold"><?= $job['title'] ?></h2>
-            <p class="text-gray-700 text-lg mt-2"><?= $job['description'] ?></p>
-            <ul class="mt-4">
-              <li class="mb-2">
-                <strong>Salary:</strong> <?= formatSalary($job['salary']); ?>
-              </li>
-              <li class="mb-2">
-                <strong>Location:</strong> <?= $job['location'] ?>
-
-                <span class="text-xs text-white <?= $job['location'] === 'New York' ? 'bg-blue-500' : 'bg-green-500'; ?> rounded-full px-2 py-1 ml-2"><?= $job['location'] === 'New York' ? 'Local' : 'Remote'; ?></span>
-              </li>
-              <?php if (!empty($job['tags'])) : ?>
-                <li class="mb-2">
-                  <strong>Tags:</strong> <?= highlightTags($job['tags'], 'SEO') ?>
-                </li>
-              <?php endif; ?>
-            </ul>
-          </div>
+    <header class="bg-blue-500 text-white p-4">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-semibold">Job Listings</h1>
         </div>
-      </div>
-    <?php endforeach; ?>
-  </div>
+    </header>
+    <div class="container mx-auto p-4 mt-4">
+        <div class="bg-green-100 rounded-lg shadow-md p-6 my-6">
+            <!-- <h2 class="text-2xl font-semibold mb-4">Average Salary: <?php echo calculateAverageSalary($listings); ?>
+            </h2> -->
+            <h2 class="text-2xl font-semibold mb-4">Average Salary: <?php echo calculateAverageSalary2($listings); ?>
+            </h2>
+        </div>
+        <!-- Output -->
+        <?php foreach ($listings as $index => $job) : ?>
+        <div class="md my-4">
+            <div class="rounded-lg shadow-md <?= $index % 2 === 0 ? 'bg-blue-100' : 'bg-white' ?>">
+                <div class="p-4">
+                    <h2 class="text-xl font-semibold"><?= $job['title'] ?></h2>
+                    <p class="text-gray-700 text-lg mt-2"><?= $job['description'] ?></p>
+                    <ul class="mt-4">
+                        <li class="mb-2">
+                            <strong>Salary:</strong> <?= formatSalary($job['salary']); ?>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Location:</strong> <?= $job['location'] ?>
+
+                            <span
+                                class="text-xs text-white <?= $job['location'] === 'New York' ? 'bg-blue-500' : 'bg-green-500'; ?> rounded-full px-2 py-1 ml-2"><?= $job['location'] === 'New York' ? 'Local' : 'Remote'; ?></span>
+                        </li>
+                        <?php if (!empty($job['tags'])) : ?>
+                        <li class="mb-2">
+                            <strong>Tags:</strong> <?= highlightTags($job['tags'], 'SEO') ?>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
 </body>
 
 </html>
