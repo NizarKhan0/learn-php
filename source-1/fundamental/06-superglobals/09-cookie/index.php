@@ -1,12 +1,18 @@
+<?php
+
+  setcookie('username', 'nizar', time() + 3600, '/');
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>PHP Cookies</title>
+    <title>PHP Cookies</title>
 </head>
 
 <body>
-  <p>Cookie set. <a href="page.php">Go to page.php</a></p>
+    <p>Cookie set. <a href="page.php">Go to page.php</a></p>
 </body>
 
 </html>
