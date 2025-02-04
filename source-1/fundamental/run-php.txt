@@ -1,1 +1,4 @@
 php -S localhost:8000
+
+
+kalau guna laravel/etc tukar2 PHP version wajib enable ni dulu utk elakkan error extension=zip, extension=pdo_sqlite dalam file (PHP.ini)

@@ -5,7 +5,7 @@ $host = 'localhost';
 $port = 3306;
 $dbName = 'blog';
 $username = 'root';
-$password = '';
+$password = 'root';
 
 // Connection string (DSN)
 $dsn = "mysql:host={$host};port={$port};dbname={$dbName};charset=utf8";
@@ -16,6 +16,10 @@ try {
 
   // Set PDO to throw exceptions on error
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  //Fetch as ASSOCIATIVE ARRAY
+  $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+  
+  
 } catch (PDOException $e) {
   // If there is an error with the connection, catch it here
   echo "Connection failed: " . $e->getMessage();
