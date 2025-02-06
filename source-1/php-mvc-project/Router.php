@@ -84,6 +84,7 @@ class Router
 
     public function error($httpCode = 404){
         http_response_code($httpCode);
+        // ada -view tu sebab nama file aku letak 404-view, 403-view
         loadView("error/{$httpCode}-view");
         exit;
     }
