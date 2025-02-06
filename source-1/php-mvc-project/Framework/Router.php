@@ -1,5 +1,7 @@
 <?php
 
+namespace Framework;
+
 class Router
 {
     protected $routes = [];
@@ -82,7 +84,8 @@ class Router
      * @return void
      */
 
-    public function error($httpCode = 404){
+    public function error($httpCode = 404)
+    {
         http_response_code($httpCode);
         // ada -view tu sebab nama file aku letak 404-view, 403-view
         loadView("error/{$httpCode}-view");
@@ -98,14 +101,15 @@ class Router
      */
 
     //  $uri dan $method tu dari index.php sebab dia guna require macam laravel extend
-     public function route($uri, $method){
-        foreach($this->routes as $route){
-            if($route['method'] === $method && $route['uri'] === $uri){
-                require basePath($route['controller']);
+    public function route($uri, $method)
+    {
+        foreach ($this->routes as $route) {
+            if ($route['method'] === $method && $route['uri'] === $uri) {
+                require basePath('App/' . $route['controller']);
                 return;
             }
         }
 
         $this->error();
-     }
+    }
 }

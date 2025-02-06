@@ -1,4 +1,7 @@
 <?php
+
+use Framework\Database;
+
     // echo 'Listings';
     $config = require basePath('config/db.php');
     $db = new Database($config);

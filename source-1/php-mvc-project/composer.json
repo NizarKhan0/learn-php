@@ -1,0 +1,16 @@
+{
+  "name": "nizar/php-mvc-project",
+  "description": "PHP MVC Project",
+  "authors": [
+    {
+      "name": "Nizar Khan",
+      "email": "nizarkhan7071@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  }
+}
