@@ -20,12 +20,13 @@
  * @return void
  */
 
-function loadView($name)
+function loadView($name, $data = [])
 {
     //so dia tak perlu repeat require basePath('views/{$name}.php');
     $viewPath = basePath("views/{$name}.php");
 
     if (file_exists($viewPath)) {
+        extract($data);
         require $viewPath;
     } else {
         // require basePath("views/404.php"); kalau nak return error page
@@ -80,4 +81,16 @@ function inspectAndDie($value)
     var_dump($value);
     echo '</pre>';
     die();
+}
+
+/**
+ * Format salary
+ *
+ * @param int $salary
+ * @return string Formatted Salary
+ */
+
+function formatSalary($salary)
+{
+    return 'RM' . number_format(floatval($salary));
 }
