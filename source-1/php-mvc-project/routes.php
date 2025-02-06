@@ -1,8 +1,15 @@
 <?php
 
-    $router->get('/', 'controllers/home.php');
-    $router->get('/listings', 'controllers/listings/index.php');
-    $router->get('/listings/create', 'controllers/listings/create.php');
-    $router->get('/listing', 'controllers/listings/show.php');
-    
+//Homepage
+$router->get('/', 'HomeController@index');
+
+//Job Listings
+$router->get('/listings', 'ListingController@index');
+$router->get('/listings/create', 'ListingController@create');
+$router->get('/listing', 'ListingController@show');
+
+//Errors
+$router->get('/error/404', 'ErrorController@error404');
+$router->get('/error/403', 'ErrorController@error403');
+
 ?>

@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use App\Controllers\ErrorController;
+
 class Router
 {
     protected $routes = [];
@@ -11,17 +13,21 @@ class Router
      * 
      * @param string $method
      * @param string $uri
-     * @param string $controller
+     * @param string $action
      * @return void
      * 
      */
 
-    public function registerRoute($method, $uri, $controller)
+    public function registerRoute($method, $uri, $action)
     {
+        list($controller, $controllerMethod) = explode('@', $action);
+        // inspectAndDie($controller);
+        
         $this->routes[] = [
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller,
+            'controllerMethod' => $controllerMethod
         ];
     }
 
@@ -78,21 +84,6 @@ class Router
     }
 
     /**
-     * Load error page
-     * 
-     * @param int $httpCode
-     * @return void
-     */
-
-    public function error($httpCode = 404)
-    {
-        http_response_code($httpCode);
-        // ada -view tu sebab nama file aku letak 404-view, 403-view
-        loadView("error/{$httpCode}-view");
-        exit;
-    }
-
-    /**
      * Route the request
      * 
      * @param string $uri
@@ -105,11 +96,21 @@ class Router
     {
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && $route['uri'] === $uri) {
-                require basePath('App/' . $route['controller']);
+                //Extract controller and method
+                $controller = 'App\\Controllers\\' . $route['controller'];
+                $controllerMethod = $route['controllerMethod'];
+
+                // Instantiate controller
+                $controllerInstance = new $controller();
+                //Call controller method
+                $controllerInstance->$controllerMethod();
+                
                 return;
+
             }
         }
 
-        $this->error();
+        // Route not found
+        ErrorController::notFound();
     }
 }
