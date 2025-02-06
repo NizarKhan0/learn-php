@@ -1,3 +1,5 @@
 <?php
-    echo 'Create';
+    // echo 'Create';
+
+    loadView('listings/create-view');
 ?>
