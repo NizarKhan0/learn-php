@@ -7,10 +7,11 @@
  */
 
 //basepath untuk define terus path supaya mudah dan clean code
-  function basePath($path = ''){
+function basePath($path = '')
+{
     // inspect($path);
-     return __DIR__ . '/' . $path;
-  }
+    return __DIR__ . '/' . $path;
+}
 
 
 /**
@@ -61,7 +62,7 @@ function loadPartial($name)
  * @return void
  */
 
- //boleh nak guna nama lain selain inspect, better samakan macam laravel dd
+//boleh nak guna nama lain selain inspect, better samakan macam laravel dd
 function inspect($value)
 {
     echo '<pre>';
@@ -95,4 +96,16 @@ function inspectAndDie($value)
 function formatSalary($salary)
 {
     return 'RM' . number_format(floatval($salary));
+}
+
+/**
+ * Sanitize Data
+ * 
+ * @param string $dirty
+ * @return string
+ */
+
+function sanitize($dirty)
+{
+    return filter_var(trim($dirty), FILTER_SANITIZE_SPECIAL_CHARS);
 }
