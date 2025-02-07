@@ -49,9 +49,9 @@ class ListingController
      * @return void
      */
 
-    public function show()
+    public function show($params)
     {
-        $id = $_GET['id'] ?? null;
+        $id = $params['id'] ?? null;
         // inspect($id);
 
         $params = [
@@ -60,6 +60,12 @@ class ListingController
 
         $listings = $this->db->query("SELECT * FROM job_listings WHERE id = :id", $params)->fetch();
         // inspect($listings);
+
+        //Check if listing exists
+        if (!$listings) {
+            ErrorController::notFound('Listing not found.');
+            return;
+        }
 
         loadView('listings/show-view', [
             'listing' => $listings
