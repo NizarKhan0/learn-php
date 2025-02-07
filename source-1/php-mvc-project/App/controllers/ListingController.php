@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Framework\Database;
+use Framework\Validation;
 
 class ListingController
 {
@@ -23,11 +24,16 @@ class ListingController
 
     public function index()
     {
+        //test custom validation
+        // inspectAndDie(Validation::string('nizar', 2));
+        // inspectAndDie(Validation::email('nizarkhan7071@gmail.com'));
+        // inspectAndDie(Validation::matches('7', '7'));
+
         $listings = $this->db->query("SELECT * FROM job_listings")->fetchAll();
 
         // inspect($listings);
 
-        loadView('listings/index-view', [
+        loadView('listings/index', [
             'listings' => $listings,
         ]);
     }
@@ -40,7 +46,7 @@ class ListingController
 
     public function create()
     {
-        loadView('listings/create-view');
+        loadView('listings/create');
     }
 
     /**
@@ -67,7 +73,7 @@ class ListingController
             return;
         }
 
-        loadView('listings/show-view', [
+        loadView('listings/show', [
             'listing' => $listings
         ]);
     }

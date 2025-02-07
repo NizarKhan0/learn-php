@@ -22,8 +22,8 @@
 
 function loadView($name, $data = [])
 {
-    //so dia tak perlu repeat require basePath('views/{$name}.php');
-    $viewPath = basePath("App/views/{$name}.php");
+    //variable $name tu dynamic, so dia tak perlu repeat require basePath('views/home.view.php');
+    $viewPath = basePath("App/views/{$name}.view.php");
 
     if (file_exists($viewPath)) {
         extract($data);
@@ -61,6 +61,7 @@ function loadPartial($name)
  * @return void
  */
 
+ //boleh nak guna nama lain selain inspect, better samakan macam laravel dd
 function inspect($value)
 {
     echo '<pre>';
@@ -80,6 +81,7 @@ function inspectAndDie($value)
     echo '<pre>';
     var_dump($value);
     echo '</pre>';
+    //die ni supaya stop execution dan dia takkan tunjuk kalau dah ada error
     die();
 }
 

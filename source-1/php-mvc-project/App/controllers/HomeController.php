@@ -22,7 +22,7 @@ class HomeController
 
         // inspect($listings);
 
-        loadView('home-view', [
+        loadView('home', [
             'listings' => $listings
         ]);
     }
