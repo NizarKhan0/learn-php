@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require __DIR__ . '/../vendor/autoload.php';
 // require 'c:\laragon\www\learn-php\source-1\php-mvc-project\helpers.php';
 require '../helpers.php';

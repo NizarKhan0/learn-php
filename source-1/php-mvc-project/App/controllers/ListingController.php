@@ -115,13 +115,21 @@ class ListingController
             'state',
             'email',
             'salary',
+            'phone',
         ];
 
+
         $errors = [];
+        $numberFields = ['salary', 'phone'];
 
         foreach ($requiredFields as $field) {
             if (empty($newListingData[$field]) || !Validation::string($newListingData[$field])) {
                 $errors[$field] = ucfirst($field) . ' is required';
+            } elseif ($field === 'email' && !Validation::email($newListingData[$field])) {
+                //gunakan elseif sebab masih ada condition selepas if biasa
+                $errors[$field] = 'Email is not valid';
+            } elseif (in_array($field, $numberFields) && !Validation::number($newListingData[$field])) {
+                $errors[$field] = ucfirst($field) . ' must be a number';
             }
         }
 
@@ -133,37 +141,37 @@ class ListingController
             ]);
         } else {
             //Submit data 
-            
+
             // $this->db->query('INSERT INTO job_listings (title, description, salary, etc)
             $fields = [];
-            
-             foreach($newListingData as $field => $value) {
-                $fields[] = $field;    
-             }
 
-             //implode is array to string
-             $fields = implode(', ', $fields);
+            foreach ($newListingData as $field => $value) {
+                $fields[] = $field;
+            }
+
+            //implode is array to string
+            $fields = implode(', ', $fields);
 
 
-             // VALUES :title, :description, :salary, etc)
-             $values = [];
+            // VALUES :title, :description, :salary, etc)
+            $values = [];
 
-             foreach($newListingData as $field => $value) {
+            foreach ($newListingData as $field => $value) {
                 //convert empty strings to null
-                if($value === '') {
+                if ($value === '') {
                     $newListingData[$field] = null;
                 }
                 $values[] = ':' . $field;
-             }
+            }
 
-             $values = implode(', ', $values);
+            $values = implode(', ', $values);
 
-             $query = "INSERT INTO job_listings ({$fields}) VALUES ({$values})";
+            $query = "INSERT INTO job_listings ({$fields}) VALUES ({$values})";
 
-             $this->db->query($query, $newListingData);
+            $this->db->query($query, $newListingData);
 
-             redirect('/listings');
-             exit;
+            redirect('/listings');
+            exit;
         }
 
     }
@@ -189,7 +197,10 @@ class ListingController
         // inspectAndDie($listing);
 
         $this->db->query("DELETE FROM job_listings WHERE id = :id", $params);
-        
+
+        //Set flash message
+        $_SESSION['success_message'] = 'Listing deleted successfully';
+
         redirect('/listings');
     }
 }

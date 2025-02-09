@@ -50,6 +50,10 @@ class Validation {
 
         return $value1 === $value2;
       }
+
+      public static function number($value) {
+        return is_numeric($value) && $value >= 0;
+      }
      
 }
 
