@@ -84,24 +84,24 @@ class ListingController
      * @return void
      */
 
-     public function store()
-     {
+    public function store()
+    {
         // title & etc tu nama dia array_key
         $allowedFields = [
-          'title',
-          'description',
-          'salary',
-          'tags',
-          'company',
-          'address',
-          'city',
-          'state',
-          'phone',
-          'email',
-          'requirements',
-          'benefits',
+            'title',
+            'description',
+            'salary',
+            'tags',
+            'company',
+            'address',
+            'city',
+            'state',
+            'phone',
+            'email',
+            'requirements',
+            'benefits',
         ];
-        
+
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
 
         $newListingData['user_id'] = 1;
@@ -109,32 +109,63 @@ class ListingController
         $newListingData = array_map('sanitize', $newListingData);
 
         $requiredFields = [
-          'title',
-          'description',
-          'city',
-          'state',
-          'email',
+            'title',
+            'description',
+            'city',
+            'state',
+            'email',
+            'salary',
         ];
 
         $errors = [];
 
-        foreach($requiredFields as $field) {
-            if(empty($newListingData[$field]) || !Validation::string($newListingData[$field])) {
+        foreach ($requiredFields as $field) {
+            if (empty($newListingData[$field]) || !Validation::string($newListingData[$field])) {
                 $errors[$field] = ucfirst($field) . ' is required';
             }
         }
-        
-        if(!empty($errors)) {
+
+        if (!empty($errors)) {
             //Reload view with errors
             loadView('listings/create', [
-               'errors' => $errors,
-               'listing' => $newListingData,
+                'errors' => $errors,
+                'listing' => $newListingData,
             ]);
-        }else{
+        } else {
             //Submit data 
-            echo 'Success';
+            
+            // $this->db->query('INSERT INTO job_listings (title, description, salary, etc)
+            $fields = [];
+            
+             foreach($newListingData as $field => $value) {
+                $fields[] = $field;    
+             }
+
+             //implode is array to string
+             $fields = implode(', ', $fields);
+
+
+             // VALUES :title, :description, :salary, etc)
+             $values = [];
+
+             foreach($newListingData as $field => $value) {
+                //convert empty strings to null
+                if($value === '') {
+                    $newListingData[$field] = null;
+                }
+                $values[] = ':' . $field;
+             }
+
+             $values = implode(', ', $values);
+
+             $query = "INSERT INTO job_listings ({$fields}) VALUES ({$values})";
+
+             $this->db->query($query, $newListingData);
+
+             redirect('/listings');
+             exit;
         }
 
-     }
+    }
 }
 ?>
