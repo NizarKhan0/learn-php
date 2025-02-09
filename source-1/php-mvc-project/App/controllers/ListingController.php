@@ -118,7 +118,6 @@ class ListingController
             'phone',
         ];
 
-
         $errors = [];
         $numberFields = ['salary', 'phone'];
 
@@ -169,6 +168,8 @@ class ListingController
             $query = "INSERT INTO job_listings ({$fields}) VALUES ({$values})";
 
             $this->db->query($query, $newListingData);
+            
+            $_SESSION['success_message'] = 'Listing created successfully';
 
             redirect('/listings');
             exit;
@@ -202,6 +203,141 @@ class ListingController
         $_SESSION['success_message'] = 'Listing deleted successfully';
 
         redirect('/listings');
+    }
+
+    /**
+     * Edit a listing
+     * @param array $params
+     * @return void
+     */
+
+    public function edit($params)
+    {
+        $id = $params['id'] ?? null;
+        // inspect($id);
+
+        $params = [
+            'id' => $id
+        ];
+
+        $listings = $this->db->query("SELECT * FROM job_listings WHERE id = :id", $params)->fetch();
+
+        //Check if listing exists
+        if (!$listings) {
+            ErrorController::notFound('Listing not found.');
+            return;
+        }
+
+        // inspectAndDie($listings);
+
+        loadView('listings/edit', [
+            'listing' => $listings
+        ]);
+    }
+
+    /**
+     * Update a listing
+     * @param array $params
+     * @return void
+     */
+
+    public function update($params)
+    {
+        $id = $params['id'] ?? null;
+        // inspect($id);
+
+        $params = [
+            'id' => $id
+        ];
+
+        $listing = $this->db->query("SELECT * FROM job_listings WHERE id = :id", $params)->fetch();
+
+        //Check if listing exists
+        if (!$listing) {
+            ErrorController::notFound('Listing not found.');
+            return;
+        }
+
+        // title & etc tu nama dia array_key
+        $allowedFields = [
+            'title',
+            'description',
+            'salary',
+            'tags',
+            'company',
+            'address',
+            'city',
+            'state',
+            'phone',
+            'email',
+            'requirements',
+            'benefits',
+        ];
+
+        $updateValues = [];
+
+        $updateValues = array_intersect_key($_POST, array_flip($allowedFields));
+
+        $updateValues = array_map('sanitize', $updateValues);
+
+        $requiredFields = [
+            'title',
+            'description',
+            'city',
+            'state',
+            'email',
+            'salary',
+            'phone',
+        ];
+
+        $errors = [];
+        $numberFields = ['salary', 'phone'];
+
+        foreach ($requiredFields as $field) {
+            if (empty($updateValues[$field]) || !Validation::string($updateValues[$field])) {
+                $errors[$field] = ucfirst($field) . ' is required';
+            } elseif ($field === 'email' && !Validation::email($updateValues[$field])) {
+                //gunakan elseif sebab masih ada condition selepas if biasa
+                $errors[$field] = 'Email is not valid';
+            } elseif (in_array($field, $numberFields) && !Validation::number($updateValues[$field])) {
+                $errors[$field] = ucfirst($field) . ' must be a number';
+            }
+        }
+
+        if (!empty($errors)) {
+            //Reload view with errors
+            loadView('listings/edit', [
+                'listing' => $listing,
+                'errors' => $errors,
+            ]);
+            exit;
+        } else {
+            // inspectAndDie('success');
+
+            $updateFields = [];
+            // $field = field dalam db $ value = data dalam field tu
+
+            foreach(array_keys($updateValues) as $field) {
+                // inspect($field);
+                $updateFields[] = "{$field} = :{$field}";
+            }
+            // inspect($updateFields);
+
+            //array to string
+            $updateFields = implode(', ', $updateFields);
+            // inspectAndDie($updateFields);
+            $updateQuery = "UPDATE job_listings SET $updateFields WHERE id = :id";
+            // inspectAndDie($updateQuery);
+
+            $updateValues['id'] = $id;
+            $this->db->query($updateQuery,$updateValues);
+            
+            $_SESSION['success_message'] = 'Listing updated successfully';
+
+            redirect('/listings/' . $id);
+        }
+
+        // inspectAndDie($updateValues);
     }
 }
 ?>
