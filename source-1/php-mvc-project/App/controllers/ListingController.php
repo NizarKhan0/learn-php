@@ -167,5 +167,30 @@ class ListingController
         }
 
     }
+
+    /**
+     * Delete a listing
+     * @param array $params
+     * @return void
+     */
+    public function destroy($params)
+    {
+        $id = $params['id'] ?? null;
+        $params = [
+            'id' => $id
+        ];
+
+        $listing = $this->db->query("SELECT * FROM job_listings WHERE id = :id", $params)->fetch();
+
+        if (!$listing) {
+            ErrorController::notFound('Listing not found.');
+            return;
+        }
+        // inspectAndDie($listing);
+
+        $this->db->query("DELETE FROM job_listings WHERE id = :id", $params);
+        
+        redirect('/listings');
+    }
 }
 ?>
