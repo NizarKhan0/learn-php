@@ -42,12 +42,13 @@ function loadView($name, $data = [])
  * @return void
  */
 
-function loadPartial($name)
+function loadPartial($name, $data = [])
 {
     //so dia tak perlu repeat require basePath('views/partials/{$name}.php');
     $partialPath = basePath("App/views/partials/{$name}.php");
 
     if (file_exists($partialPath)) {
+        extract($data);
         require $partialPath;
     } else {
         // require basePath("views/404.php"); kalau nak return error page

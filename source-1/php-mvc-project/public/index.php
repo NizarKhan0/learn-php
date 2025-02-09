@@ -1,12 +1,17 @@
 <?php
 
-session_start();
-
 require __DIR__ . '/../vendor/autoload.php';
+
+use Framework\Router;
+use Framework\Session;
+
+Session::start();
+
 // require 'c:\laragon\www\learn-php\source-1\php-mvc-project\helpers.php';
 require '../helpers.php';
 
-use Framework\Router;
+// 0 = Session Disabled , 1 = No Session, 2 = Active Session
+// inspectAndDie(session_status());
 
     // require basePath('Framework/Database.php');
     // require basePath('Framework/Router.php');
