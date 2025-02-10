@@ -7,7 +7,7 @@ use Framework\Session;
 <header class="p-4 text-white bg-blue-900">
     <div class="container flex items-center justify-between mx-auto">
         <h1 class="text-3xl font-semibold">
-            <a href="index.html">Void</a>
+            <a href="/">Void</a>
         </h1>
         <nav class="space-x-4">
 

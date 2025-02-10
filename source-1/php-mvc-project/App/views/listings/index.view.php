@@ -7,7 +7,13 @@
 <!-- Job Listings -->
 <section>
     <div class="container p-4 mx-auto mt-4">
-        <div class="p-3 mb-4 text-3xl font-bold text-center border border-gray-300">All Jobs</div>
+        <div class="p-3 mb-4 text-3xl font-bold text-center border border-gray-300">
+            <?php if (isset($keywords)): ?>
+            Search Results for: <?php echo htmlspecialchars($keywords)?>
+            <?php else: ?>
+            All Jobs
+            <?php endif; ?>
+        </div>
 
         <!-- flash message -->
         <?php loadPartial('message'); ?>
@@ -28,7 +34,7 @@
                             <strong>Location:</strong> <?php echo $list->city ?>, <?php echo $list->state ?>
                             <!-- <span class="px-2 py-1 ml-2 text-xs text-white bg-blue-500 rounded-full">Local</span> -->
                         </li>
-                        <?php if (!empty($list->tags)) : ?>
+                        <?php if (!empty($list->tags)): ?>
                         <li class="mb-2">
                             <strong>Tags:</strong> <?php echo $list->tags; ?>
                         </li>
