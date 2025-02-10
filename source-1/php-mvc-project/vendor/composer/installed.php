@@ -3,7 +3,7 @@
         'name' => 'nizar/php-mvc-project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '3834c6e9c52a7558ec3facc0d1bef953d2083793',
+        'reference' => 'd9ba5c3d4d3c98da0089cc299385c540f2364247',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'nizar/php-mvc-project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '3834c6e9c52a7558ec3facc0d1bef953d2083793',
+            'reference' => 'd9ba5c3d4d3c98da0089cc299385c540f2364247',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

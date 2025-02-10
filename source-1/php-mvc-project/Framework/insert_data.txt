@@ -1,0 +1,55 @@
+//ini seeder 1 file je
+
+<?php
+// Database configuration
+$host = 'localhost';
+$db   = 'job_listings';
+$user = 'root';
+$pass = '';
+$charset = 'utf8mb4';
+
+// Data Source Name (DSN)
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+// PDO options
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+    // Create a new PDO instance
+    $pdo = new PDO($dsn, $user, $pass, $options);
+
+    // Data to insert
+    $name = 'Admin';
+    $email = 'admin@demo.com';
+    $password = password_hash('password', PASSWORD_DEFAULT); // Hash the password
+    $state = 'Johor';
+    $city = 'Pontian';
+    $created_at = date('Y-m-d H:i:s'); // Current timestamp
+
+    // SQL statement with named placeholders
+    $sql = "INSERT INTO users (name, email, password, state, city, created_at) 
+            VALUES (:name, :email, :password, :state, :city, :created_at)";
+
+    // Prepare the statement
+    $stmt = $pdo->prepare($sql);
+
+    // Bind parameters
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $password);
+    $stmt->bindParam(':state', $state);
+    $stmt->bindParam(':city', $city);
+    $stmt->bindParam(':created_at', $created_at);
+
+    // Execute the statement
+    $stmt->execute();
+
+    echo "User inserted successfully.";
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+?>
