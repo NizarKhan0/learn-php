@@ -14,7 +14,32 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping data for table job_listings.job_listings: ~0 rows (approximately)
+
+-- Dumping database structure for job_listings
+CREATE DATABASE IF NOT EXISTS `job_listings` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `job_listings`;
+
+-- Dumping structure for table job_listings.job_listings
+CREATE TABLE IF NOT EXISTS `job_listings` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `salary` decimal(10,2) DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  `company` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `requirements` text,
+  `benefits` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table job_listings.job_listings: ~6 rows (approximately)
 INSERT INTO `job_listings` (`id`, `user_id`, `title`, `description`, `salary`, `tags`, `company`, `address`, `city`, `state`, `phone`, `email`, `requirements`, `benefits`, `created_at`) VALUES
 	(1, 1, 'Software Engineer', 'We are seeking a skilled software engineer to develop high-quality software solutions', 90000.00, 'development, coding, java, python', 'Tech Solutions Inc.', '123 Main St', 'Albany', 'NY', '348-334-3949', 'info@techsolutions.com', 'Bachelors degree in Computer Science or related field, 3+ years of software development experience', 'Healthcare, 401(k) matching, flexible work hours', '2025-02-10 10:07:43'),
 	(2, 2, 'Marketing Specialist', 'We are looking for a Marketing Specialist to create and manage marketing campaigns', 70000.00, 'marketing, advertising', 'Marketing Pros', '456 Market St', 'San Francisco', 'CA', '454-344-3344', 'info@marketingpros.com', 'Bachelors degree in Marketing or related field, experience in digital marketing', 'Health and dental insurance, paid time off, remote work options', '2025-02-10 10:07:43'),
@@ -22,6 +47,19 @@ INSERT INTO `job_listings` (`id`, `user_id`, `title`, `description`, `salary`, `
 	(4, 1, 'Data Analyst', 'We are hiring a Data Analyst to analyze and interpret data for insights', 75000.00, 'data analysis, statistics', 'Data Insights LLC', '101 Data St', 'Chicago', 'IL', '444-555-5555', 'info@datainsights.com', 'Bachelors degree in Data Science or related field, strong analytical skills', 'Health benefits, remote work options, casual dress code', '2025-02-10 10:07:43'),
 	(5, 2, 'Graphic Designer', 'Join our creative team as a Graphic Designer and bring ideas to life', 70000.00, 'graphic design, creative', 'CreativeWorks Inc.', '234 Design Blvd', 'Albany', 'NY', '499-321-9876', 'info@creativeworks.com', 'Bachelors degree in Graphic Design or related field, proficiency in Adobe Creative Suite', 'Flexible work hours, creative work environment, opportunities for growth', '2025-02-10 10:07:43'),
 	(6, 1, 'Data Scientist', 'We\'re looking for a Data Scientist to analyze complex data and generate insights', 100000.00, 'data science, machine learning', 'DataGenius Corp', '567 Data Drive', 'Boston', 'MA', '684-789-1234', 'info@datagenius.com', 'Masters or Ph.D. in Data Science or related field, experience with machine learning algorithms', 'Competitive salary, remote work options, professional development', '2025-02-10 10:07:43');
+
+-- Dumping structure for table job_listings.users
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table job_listings.users: ~1 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `state`, `city`, `created_at`) VALUES
