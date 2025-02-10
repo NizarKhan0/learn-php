@@ -18,7 +18,7 @@ class HomeController
     public function index()
     {
         // die('HomeController@index');
-        $listings = $this->db->query("SELECT * FROM job_listings LIMIT 6")->fetchAll();
+        $listings = $this->db->query("SELECT * FROM job_listings ORDER BY created_at DESC LIMIT 6")->fetchAll();
 
         // inspect($listings);
 

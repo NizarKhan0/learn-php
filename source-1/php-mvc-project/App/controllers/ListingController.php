@@ -3,7 +3,9 @@
 namespace App\Controllers;
 
 use Framework\Database;
+use Framework\Session;
 use Framework\Validation;
+use Framework\Authorization;
 
 class ListingController
 {
@@ -29,7 +31,7 @@ class ListingController
         // inspectAndDie(Validation::email('nizarkhan7071@gmail.com'));
         // inspectAndDie(Validation::matches('7', '7'));
 
-        $listings = $this->db->query("SELECT * FROM job_listings")->fetchAll();
+        $listings = $this->db->query("SELECT * FROM job_listings ORDER BY created_at DESC")->fetchAll();
 
         // inspect($listings);
 
@@ -57,6 +59,8 @@ class ListingController
 
     public function show($params)
     {
+        // inspectAndDie(Session::get('user')['id']);
+
         $id = $params['id'] ?? null;
         // inspect($id);
 
@@ -104,7 +108,8 @@ class ListingController
 
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
 
-        $newListingData['user_id'] = 1;
+        //session key dari user
+        $newListingData['user_id'] = Session::get('user')['id'];
 
         $newListingData = array_map('sanitize', $newListingData);
 
@@ -168,8 +173,9 @@ class ListingController
             $query = "INSERT INTO job_listings ({$fields}) VALUES ({$values})";
 
             $this->db->query($query, $newListingData);
-            
-            $_SESSION['success_message'] = 'Listing created successfully';
+
+            // $_SESSION['success_message'] = 'Listing created successfully';
+            Session::setFlashMessage('success_message', 'Listing created successfully');
 
             redirect('/listings');
             exit;
@@ -191,16 +197,31 @@ class ListingController
 
         $listing = $this->db->query("SELECT * FROM job_listings WHERE id = :id", $params)->fetch();
 
+        //Check if listing exists
         if (!$listing) {
             ErrorController::notFound('Listing not found.');
             return;
         }
         // inspectAndDie($listing);
 
+        //Check if user is authorized to delete
+        if (!Authorization::isOwner($listing->user_id)) {
+            // $_SESSION['error_message'] = 'You are not authorized to delete this listing.';
+            Session::setFlashMessage('error_message', 'You are not authorized to delete this listing.');
+            return redirect('/listings/' . $listing->id);
+        }
+
+        //cara kedua
+        // if(Session::get('user')['id'] !== $listing->user_id) {
+        //     $_SESSION['error_message'] = 'You are not authorized to delete this listing.';
+        //     return redirect('/listings/'. $listing->id);
+        // }
+
         $this->db->query("DELETE FROM job_listings WHERE id = :id", $params);
 
         //Set flash message
-        $_SESSION['success_message'] = 'Listing deleted successfully';
+        // $_SESSION['success_message'] = 'Listing deleted successfully';
+        Session::setFlashMessage('success_message', 'Listing deleted successfully');
 
         redirect('/listings');
     }
@@ -220,18 +241,25 @@ class ListingController
             'id' => $id
         ];
 
-        $listings = $this->db->query("SELECT * FROM job_listings WHERE id = :id", $params)->fetch();
+        $listing = $this->db->query("SELECT * FROM job_listings WHERE id = :id", $params)->fetch();
 
         //Check if listing exists
-        if (!$listings) {
+        if (!$listing) {
             ErrorController::notFound('Listing not found.');
             return;
+        }
+
+        //Check if user is authorized to edit
+        if (!Authorization::isOwner($listing->user_id)) {
+            // $_SESSION['error_message'] = 'You are not authorized to edit this listing.';
+            Session::setFlashMessage('error_message', 'You are not authorized to edit this listing.');
+            return redirect('/listings/' . $listing->id);
         }
 
         // inspectAndDie($listings);
 
         loadView('listings/edit', [
-            'listing' => $listings
+            'listing' => $listing
         ]);
     }
 
@@ -256,6 +284,13 @@ class ListingController
         if (!$listing) {
             ErrorController::notFound('Listing not found.');
             return;
+        }
+
+        //Check if user is authorized to update
+        if (!Authorization::isOwner($listing->user_id)) {
+            // $_SESSION['error_message'] = 'You are not authorized to update this listing.';
+            Session::setFlashMessage('error_message', 'You are not authorized to update this listing.');
+            return redirect('/listings/' . $listing->id);
         }
 
         // title & etc tu nama dia array_key
@@ -317,7 +352,7 @@ class ListingController
             $updateFields = [];
             // $field = field dalam db $ value = data dalam field tu
 
-            foreach(array_keys($updateValues) as $field) {
+            foreach (array_keys($updateValues) as $field) {
                 // inspect($field);
                 $updateFields[] = "{$field} = :{$field}";
             }
@@ -330,9 +365,10 @@ class ListingController
             // inspectAndDie($updateQuery);
 
             $updateValues['id'] = $id;
-            $this->db->query($updateQuery,$updateValues);
-            
-            $_SESSION['success_message'] = 'Listing updated successfully';
+            $this->db->query($updateQuery, $updateValues);
+
+            // $_SESSION['success_message'] = 'Listing updated successfully';
+            Session::setFlashMessage('success_message', 'Listing updated successfully');
 
             redirect('/listings/' . $id);
         }

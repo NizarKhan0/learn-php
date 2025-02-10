@@ -25,7 +25,15 @@ class UserController
 
     public function login()
     {
-        loadView('users/login');
+        //auto fill form login for demo
+        $user = [
+            'email' => 'admin@demo.com',
+            'password' => 'password',
+        ];
+
+        loadView('users/login', [
+            'user' => $user
+        ]);
     }
 
     /**

@@ -12,15 +12,19 @@
             'errors' => $errors ?? [],
         ]) ?>
 
+        <!-- /auth/login post ke page yg sama -->
         <form method="POST" action="/auth/login">
             <div class="mb-4">
                 <input type="email" name="email" placeholder="Email Address"
                     class="w-full px-4 py-2 border rounded focus:outline-none"
                     value="<?php echo $user['email'] ?? '' ?>" />
+                <!-- value ni juga utk kekalkan old value kalu salah isi, macam laravel -->
             </div>
             <div class="mb-4">
                 <input type="password" name="password" placeholder="Password"
-                    class="w-full px-4 py-2 border rounded focus:outline-none" />
+                    class="w-full px-4 py-2 border rounded focus:outline-none"
+                    value="<?php echo $user['password'] ?? '' ?>" />
+                <!-- value password sepatutnya takde, tapi ni letak utk account demo je -->
             </div>
             <button type="submit"
                 class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none">
